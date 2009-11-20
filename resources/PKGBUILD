@@ -1,0 +1,30 @@
+# Contributor: Clément DEMOULINS <cdemoulins@gmail.com>
+
+pkgname=archdep-svn
+pkgver=4
+pkgrel=1
+pkgdesc="Check for redundant dependences in PKGBUILD or from package name."
+arch=('i686' 'x86_64')
+url="https://indefero.archivel.fr/index.php/p/archdep/"
+license=('GPL3')
+depends=('pygraphviz')
+source=()
+md5sums=()
+
+_svntrunk=https://indefero.archivel.fr/svn/archdep/trunk
+_svnmod=archdep
+
+build() {
+    cd $startdir/src
+
+    if [ -d $_svnmod/.svn ]; then
+        (cd $_svnmod && svn up)
+    else
+        svn co $_svntrunk $_svnmod
+    fi
+
+    msg "SVN checkout done or server timeout"
+    
+    cd $_svnmod/src/Archdep || return 1
+    python setup.py install --prefix=/usr --root=$pkgdir || return 1
+}
