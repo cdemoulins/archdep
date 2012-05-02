@@ -31,7 +31,7 @@ def main():
     parser.add_option("-g", "--draw", action="store_true", default=False,
             help="Draw the dependence's tree")
     parser.add_option("-p", "--package-name", action="store_true",
-            default=False, dest="package",
+            default=False, dest="package_name",
             help="Calcul optional dependences for a package name and not " \
                     + "a PKGBUILD")
     parser.add_option("-r", "--request", action="store_true", default=False,
@@ -52,12 +52,12 @@ def main():
                             datefmt='%a, %d %b %Y %H:%M:%S')
 
     for arg in args:
-        package = Package(arg, not options.program, not options.request)
+        package = Package(arg, not options.package_name, not options.request)
         if(options.draw):
             package.draw()
-        for dep in package.optional_dependences:
+        for dep in package.optional_dependencies:
             print "%s is already include by %s" % \
-                    (dep, package.optional_dependences[dep])
+                    (dep, package.optional_dependencies[dep])
 
 if __name__ == '__main__':
     main()
